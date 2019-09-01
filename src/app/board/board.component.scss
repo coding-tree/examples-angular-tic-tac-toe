@@ -1,0 +1,44 @@
+.gameBoard{
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  .board{
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  width: 612px;
+  flex-wrap: wrap;
+
+    .tile{
+      height: 200px;
+      width: 200px;
+      background: red;
+      border: 2px solid black;
+      display:flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 2em;
+    }
+  }
+
+  .buttons_container{
+    height: 20vh;
+    width: 100vw;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+
+    .button{
+      background: red;
+      height: 100px;
+      width: 20%;
+      color: white;
+      font-weight: 700;
+      font-size: 2em;
+      border: 2px dotted white;
+    }
+  }
+
+}
