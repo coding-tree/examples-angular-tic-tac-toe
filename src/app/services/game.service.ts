@@ -3,6 +3,8 @@ import { Player } from '../models/player';
 
 export class GameService {
   tiles: Tile[];
+  gameTurn: Player;
+  endGame: boolean;
 
   players: Player[];
   occupiedBlock: number;
@@ -24,57 +26,62 @@ export class GameService {
 
   initPlayers(): void {
     this.players = [];
-    this.players.push(new Player(true, 'X'));
-    this.players.push(new Player(false, 'O'));
+    this.players.push(new Player('X', 'Player 1'));
+    this.players.push(new Player('O', 'Player 2'));
+    this.gameTurn = this.players[0];
   }
 
   makeSign(item: Tile): void {
-    const playerSign = this.checkPlayerTurn();
-    console.log('turn -> ' + playerSign);
+    console.log('turn -> ' + this.gameTurn.name);
     if (item.empty) {
-      item.value = playerSign;
+      item.value = this.gameTurn.sign;
       this.occupiedBlock++;
       item.empty = false;
-    }
-    this.checkIfWin(this.tiles);
-  }
-
-  checkPlayerTurn(): string {
-    if (this.players[0].turn) {
-      this.players[0].turn = false;
-      this.players[1].turn = true;
-      return this.players[0].sign;
-    } else if (this.players[1].turn) {
-      this.players[1].turn = false;
-      this.players[0].turn = true;
-      return this.players[1].sign;
+      this.endGame = this.checkIfWin(this.tiles);
+      this.showWinner(this.endGame);
+      this.changeTurn();
     }
   }
 
-  checkIfWin(tiles: Tile[]): void {
-    if (!tiles[0].empty && tiles[0].value === tiles[1].value && tiles[0].value === tiles[2].value ) {
-      this.showWinner(tiles[0].value);
-    } else if (!tiles[0].empty && tiles[0].value === tiles[3].value && tiles[0].value === tiles[6].value) {
-      this.showWinner(tiles[0].value);
-    } else if (!tiles[0].empty && tiles[0].value === tiles[4].value && tiles[0].value === tiles[8].value) {
-      this.showWinner(tiles[0].value);
-    } else if (!tiles[1].empty && tiles[1].value === tiles[4].value && tiles[1].value === tiles[7].value) {
-      this.showWinner(tiles[1].value);
-    } else if (!tiles[2].empty && tiles[2].value === tiles[4].value && tiles[2].value === tiles[6].value) {
-      this.showWinner(tiles[2].value);
-    } else if (!tiles[2].empty && tiles[2].value === tiles[5].value && tiles[2].value === tiles[8].value) {
-      this.showWinner(tiles[2].value);
-    } else if (!tiles[3].empty && tiles[3].value === tiles[4].value && tiles[3].value === tiles[5].value) {
-      this.showWinner(tiles[3].value);
-    } else if (!tiles[6].empty && tiles[6].value === tiles[7].value && tiles[6].value === tiles[8].value) {
-      this.showWinner(tiles[6].value);
-    } else if (this.occupiedBlock > 8) {
-      setTimeout(() => {
-        const restart = confirm('draw ' + ' \n Do you want to restart game?');
-        if (restart) {
-          this.newGame();
-        }
-      }, 100);
+  changeTurn(): void {
+    this.gameTurn === this.players[1] ? this.gameTurn = this.players[0] : this.gameTurn = this.players[1];
+  }
+
+  // handleMove(index: number): void {
+  //   if (!this.winner && !this.gameArray[index]) {
+  //     this.gameArray[index] = this.player;
+  //     if (this.winningMove()) {
+  //       this.winner = this.player;
+  //     }
+  //     this.player = this.player === CellValue.X ? CellValue.O : CellValue.X;
+  //   }
+  // }
+
+  // winningMove(): boolean {
+  //   const victoryConditions = [
+  //     [0, 1, 2], [3, 4, 5], [6, 7, 8], // rows
+  //     [0, 3, 6], [1, 4, 7], [2, 5, 8], // columns
+  //     [0, 4, 8], [2, 4, 6], // diagonals
+  //   ];
+  //   for (const condition of victoryConditions) {
+  //     if (this.gameArray[condition[0]]
+  //       && this.gameArray[condition[0]] === this.gameArray[condition[1]]
+  //       && this.gameArray[condition[1]] === this.gameArray[condition[2]]) {
+  //       return true;
+  //     }
+  //   }
+
+  checkIfWin(tiles: Tile[]): boolean {
+    const victoryConditions = [
+      [0, 1, 2], [3, 4, 5], [6, 7, 8], // rows
+       [0, 3, 6], [1, 4, 7], [2, 5, 8], // columns
+       [0, 4, 8], [2, 4, 6], // diagonals
+     ];
+    for (const condition of victoryConditions) {
+      if (!tiles[condition[0]].empty && tiles[condition[0]].value === tiles[condition[1]].value
+        && tiles[condition[1]].value === tiles[condition[2]].value) {
+          return true;
+      }
     }
   }
 
@@ -83,12 +90,21 @@ export class GameService {
     this.initTiles();
   }
 
-  showWinner(sign: string): void {
-    setTimeout(() => {
-      const restart = confirm('win ' + sign + ' \n Do you want to restart game?');
-      if (restart) {
-        this.newGame();
-      }
-    }, 100);
+  showWinner(val: boolean): void {
+    if (val ) {
+      setTimeout(() => {
+        const restart = confirm('win ' + this.gameTurn.name + ' \n Do you want to restart game?');
+        if (restart) {
+          this.newGame();
+        }
+      }, 100);
+    } else if (this.occupiedBlock > 8) {
+      setTimeout(() => {
+        const restart = confirm('Draw! \n Do you want to restart game?');
+        if (restart) {
+          this.newGame();
+        }
+      }, 100);
+    }
   }
 }

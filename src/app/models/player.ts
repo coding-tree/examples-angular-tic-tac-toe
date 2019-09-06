@@ -1,9 +1,9 @@
 export class Player {
-  turn: boolean;
   sign: string;
+  name: string;
 
-  constructor(t: boolean, w: string) {
-    this.turn = t;
+  constructor(w: string, n: string) {
     this.sign = w;
+    this.name = n;
   }
 }
