@@ -1,15 +1,21 @@
 import { Tile } from '../models/tile';
 import { Player } from '../models/player';
+import { Injectable } from '@angular/core';
+import { ModalService } from './modal.service';
 
+@Injectable()
 export class GameService {
   tiles: Tile[];
   gameTurn: Player;
   endGame: boolean;
+  winner: Player;
 
   players: Player[];
   occupiedBlock: number;
 
-  constructor() {
+  constructor(
+    private modalService: ModalService
+    ) {
     this.newGame();
   }
 
@@ -36,13 +42,21 @@ export class GameService {
       item.value = this.gameTurn.sign;
       this.occupiedBlock++;
       item.empty = false;
-      this.showAlertForEnd(this.checkIfWin(this.tiles));
+      this.endGame = this.checkIfWin(this.tiles);
+      this.winner = this.gameTurn;
       this.changeTurn();
+    }
+    if (this.endGame) {
+      this.modalService.open('win-modal');
+      this.newGame();
+    } else if (this.occupiedBlock > 8) {
+      this.modalService.open('draw-modal');
+      this.newGame();
     }
   }
 
   changeTurn(): void {
-    this.gameTurn === this.players[1] ? this.gameTurn = this.players[0] : this.gameTurn = this.players[1];
+    this.gameTurn === this.players[0] ? this.gameTurn = this.players[1] : this.gameTurn = this.players[0];
   }
 
   checkIfWin(tiles: Tile[]): boolean {
@@ -62,27 +76,5 @@ export class GameService {
   newGame(): void {
     this.initPlayers();
     this.initTiles();
-  }
-
-  showAlertForEnd(val: boolean): void {
-    const textMsg = 'Do you want to restart game?';
-    let msg = '';
-    if (val ) {
-      msg = 'Win';
-      this.alertWithMessage(msg, this.gameTurn.name, textMsg);
-    } else if (this.occupiedBlock > 8) {
-      msg = 'Draw';
-      this.alertWithMessage(msg, '', textMsg);
-    }
-  }
-
-  alertWithMessage(msg: string, player = '', com: string): void {
-    setTimeout(() => {
-      const restart = confirm(`${msg} ${player}
-${com}`);
-      if (restart) {
-        this.newGame();
-      }
-    }, 100);
   }
 }

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { GameService } from '../services/game.service';
+import { ModalService } from '../services/modal.service';
 
 @Component({
   selector: 'app-board',
@@ -9,10 +10,16 @@ import { GameService } from '../services/game.service';
 export class BoardComponent implements OnInit {
 
   constructor(
-    public gameService: GameService
+    public gameService: GameService,
+    public modalService: ModalService
   ) { }
 
   ngOnInit() {
+  }
+
+  newGame() {
+    this.gameService.newGame();
+    this.modalService.open('new-game-modal');
   }
 
 }

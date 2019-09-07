@@ -1,1 +1,65 @@
 /* You can add global styles to this file, and also import other style files */
+.app-modal {
+    display: none;
+
+    .modal {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 1000;
+        overflow: auto;
+
+        .modal-body {
+            padding: 20px;
+            background: #fff;
+            margin: 40px;
+            height: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            .app-modal__button {
+              background: #b9b6b6;
+              height: 50px;
+              width: 20%;
+              color: black;
+              font-weight: 700;
+              font-size: 1.5em;
+              border: 2px dotted black;
+              box-shadow: 10px 2px 2px black;
+
+              &:hover {
+                color:rgb(85, 47, 47);
+                background: linear-gradient(grey, #e4e4e4);
+              }
+            }
+
+            .app-modal__info{
+              font-weight: 700;
+              font-size: 1.5em;
+              color: black;
+            }
+        }
+    }
+
+    .modal-background {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background-color: #000;
+        opacity: 0.75;
+        z-index: 900;
+    }
+}
+
+body.modal-open {
+    overflow: hidden;
+}
+
+
+

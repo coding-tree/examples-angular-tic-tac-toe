@@ -5,6 +5,7 @@ import { AppComponent } from './app.component';
 import { BoardComponent } from './board/board.component';
 import { GameService } from './services/game.service';
 import { ModalComponent } from './modal/modal.component';
+import { ModalService } from './services/modal.service';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,10 @@ import { ModalComponent } from './modal/modal.component';
   imports: [
     BrowserModule
   ],
-  providers: [GameService],
+  providers: [
+    GameService,
+    ModalService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
