@@ -1,17 +1,18 @@
-.gameBoard{
+.gameBoard {
   display:flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
 
-  .board{
-  display:flex;
-  justify-content: center;
-  align-items: center;
-  width: 612px;
-  flex-wrap: wrap;
+  .board {
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    width: 612px;
+    flex-wrap: wrap;
+    box-shadow: 3px 3px 3px 3px black;
 
-    .tile{
+    .tile {
       height: 200px;
       width: 200px;
       background: #b9b6b6;
@@ -25,14 +26,14 @@
     }
   }
 
-  .buttons_container{
+  .buttons_container {
     height: 20vh;
     width: 100vw;
     display:flex;
     justify-content: center;
     align-items: center;
 
-    .button{
+    .button {
       background: #b9b6b6;
       height: 100px;
       width: 20%;
@@ -40,6 +41,12 @@
       font-weight: 700;
       font-size: 2em;
       border: 2px dotted black;
+      box-shadow: 10px 2px 2px black;
+
+      &:hover {
+        color:rgb(85, 47, 47);
+        background: linear-gradient(grey, #e4e4e4);
+      }
     }
   }
 

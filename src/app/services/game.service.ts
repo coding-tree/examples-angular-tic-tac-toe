@@ -10,8 +10,7 @@ export class GameService {
   occupiedBlock: number;
 
   constructor() {
-    this.initTiles();
-    this.initPlayers();
+    this.newGame();
   }
 
   initTiles(): void {
@@ -31,14 +30,13 @@ export class GameService {
     this.gameTurn = this.players[0];
   }
 
-  makeSign(item: Tile): void {
+  handleMove(item: Tile): void {
     console.log('turn -> ' + this.gameTurn.name);
     if (item.empty) {
       item.value = this.gameTurn.sign;
       this.occupiedBlock++;
       item.empty = false;
-      this.endGame = this.checkIfWin(this.tiles);
-      this.showWinner(this.endGame);
+      this.showAlertForEnd(this.checkIfWin(this.tiles));
       this.changeTurn();
     }
   }
@@ -46,30 +44,6 @@ export class GameService {
   changeTurn(): void {
     this.gameTurn === this.players[1] ? this.gameTurn = this.players[0] : this.gameTurn = this.players[1];
   }
-
-  // handleMove(index: number): void {
-  //   if (!this.winner && !this.gameArray[index]) {
-  //     this.gameArray[index] = this.player;
-  //     if (this.winningMove()) {
-  //       this.winner = this.player;
-  //     }
-  //     this.player = this.player === CellValue.X ? CellValue.O : CellValue.X;
-  //   }
-  // }
-
-  // winningMove(): boolean {
-  //   const victoryConditions = [
-  //     [0, 1, 2], [3, 4, 5], [6, 7, 8], // rows
-  //     [0, 3, 6], [1, 4, 7], [2, 5, 8], // columns
-  //     [0, 4, 8], [2, 4, 6], // diagonals
-  //   ];
-  //   for (const condition of victoryConditions) {
-  //     if (this.gameArray[condition[0]]
-  //       && this.gameArray[condition[0]] === this.gameArray[condition[1]]
-  //       && this.gameArray[condition[1]] === this.gameArray[condition[2]]) {
-  //       return true;
-  //     }
-  //   }
 
   checkIfWin(tiles: Tile[]): boolean {
     const victoryConditions = [
@@ -90,21 +64,25 @@ export class GameService {
     this.initTiles();
   }
 
-  showWinner(val: boolean): void {
+  showAlertForEnd(val: boolean): void {
+    const textMsg = 'Do you want to restart game?';
+    let msg = '';
     if (val ) {
-      setTimeout(() => {
-        const restart = confirm('win ' + this.gameTurn.name + ' \n Do you want to restart game?');
-        if (restart) {
-          this.newGame();
-        }
-      }, 100);
+      msg = 'Win';
+      this.alertWithMessage(msg, this.gameTurn.name, textMsg);
     } else if (this.occupiedBlock > 8) {
-      setTimeout(() => {
-        const restart = confirm('Draw! \n Do you want to restart game?');
-        if (restart) {
-          this.newGame();
-        }
-      }, 100);
+      msg = 'Draw';
+      this.alertWithMessage(msg, '', textMsg);
     }
+  }
+
+  alertWithMessage(msg: string, player = '', com: string): void {
+    setTimeout(() => {
+      const restart = confirm(`${msg} ${player}
+${com}`);
+      if (restart) {
+        this.newGame();
+      }
+    }, 100);
   }
 }
