@@ -15,6 +15,9 @@ export class BoardComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    if (localStorage.getItem('gameState')) {
+      this.gameService.loadFromLocalStorage();
+    }
   }
 
   newGame() {

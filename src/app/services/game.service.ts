@@ -24,7 +24,6 @@ export class GameService {
     this.occupiedBlock = 0;
     for (let i = 0; i < 9; i++) {
       const tile = new Tile(true, '');
-
       this.tiles.push(tile);
     }
   }
@@ -37,7 +36,6 @@ export class GameService {
   }
 
   handleMove(item: Tile): void {
-    console.log('turn -> ' + this.gameTurn.name);
     if (item.empty) {
       item.value = this.gameTurn.sign;
       this.occupiedBlock++;
@@ -45,18 +43,17 @@ export class GameService {
       this.endGame = this.checkIfWin(this.tiles);
       this.winner = this.gameTurn;
       this.changeTurn();
+      this.saveToLocalStorage();
     }
     if (this.endGame) {
-      this.modalService.open('win-modal');
-      this.newGame();
+      this.handleAfterEndGame('win-modal', 'gameState');
     } else if (this.occupiedBlock > 8) {
-      this.modalService.open('draw-modal');
-      this.newGame();
+      this.handleAfterEndGame('draw-modal', 'gameState');
     }
   }
 
   changeTurn(): void {
-    this.gameTurn === this.players[0] ? this.gameTurn = this.players[1] : this.gameTurn = this.players[0];
+    this.gameTurn.sign === 'X' ? this.gameTurn = this.players[1] : this.gameTurn = this.players[0];
   }
 
   checkIfWin(tiles: Tile[]): boolean {
@@ -76,5 +73,27 @@ export class GameService {
   newGame(): void {
     this.initPlayers();
     this.initTiles();
+  }
+
+  saveToLocalStorage() {
+    const saved = {
+      game: this.tiles,
+      turn: this.gameTurn,
+      occupied: this.occupiedBlock
+    };
+    localStorage.setItem('gameState', JSON.stringify(saved));
+  }
+
+  loadFromLocalStorage() {
+    const savedGame = JSON.parse(localStorage.getItem('gameState'));
+    this.tiles = savedGame.game;
+    this.gameTurn = savedGame.turn;
+    this.occupiedBlock = savedGame.occupied;
+  }
+
+  handleAfterEndGame(modal: string, localStorageItem: string) {
+    this.modalService.open(modal);
+    localStorage.removeItem(localStorageItem);
+    this.newGame();
   }
 }
