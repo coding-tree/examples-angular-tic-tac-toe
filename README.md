@@ -1,7 +1,7 @@
 Tic Tac Toe Angular
 
 ## Prerequisites
-> You should have installed below programs to run this project:
+- **You should have installed below programs to run this project:**
 
 - Node.Js
 - Npm
@@ -13,19 +13,19 @@ Tic Tac Toe Angular
 
 ### Setup
 
-> Enter the main path to the project
+- **Enter the main path to the project**
 
 ```shell
 $ cd 'your project path'
 ```
 
-> Run project with command
+- **Run project with command**
 
 ```shell
 $ ng serve
 ```
 
-> Go to localhost:4200
+- **Go to localhost:4200**
 
 ---
 
@@ -44,7 +44,7 @@ $ ng serve
 
 ### Step 2
 
-- **Your content!** 🔨🔨🔨
+- **Your changes!** 🔨🔨🔨
 
 ### Step 3
 
@@ -52,17 +52,9 @@ $ ng serve
 
 ---
 
-## FAQ
-
-- **How do I do *specifically* so and so?**
-    - No problem! Just do this.
-
----
-
-
 ## License
 
 [![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](http://badges.mit-license.org)
 
 - **[MIT license](http://opensource.org/licenses/mit-license.php)**
-- Copyright 2019 © <a href="https://github.com/raszta/examples-angular-tic-tac-toe" target="_blank">Raszta</a>.
+- Copyright 2019 © <a href="https://github.com/raszta" target="_blank">Raszta</a>.
