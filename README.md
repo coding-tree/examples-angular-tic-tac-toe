@@ -1,7 +1,7 @@
 Tic Tac Toe Angular
 
 ## Prerequisites
-- **You should have installed below programs to run this project:**
+**You should have installed below programs to run this project:**
 
 - Node.Js
 - Npm
@@ -17,6 +17,12 @@ Tic Tac Toe Angular
 
 ```shell
 $ cd 'your project path'
+```
+
+- **Install all dependencies for node**
+
+```shell
+$ npm install
 ```
 
 - **Run project with command**
