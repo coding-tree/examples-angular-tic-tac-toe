@@ -8,6 +8,7 @@ import { ModalService } from '../services/modal.service';
   styleUrls: ['./board.component.scss']
 })
 export class BoardComponent implements OnInit {
+  savedStats: any;
 
   constructor(
     public gameService: GameService,
@@ -15,14 +16,28 @@ export class BoardComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.gameService.newGame();
     if (localStorage.getItem('gameState')) {
       this.gameService.loadFromLocalStorage();
+    }
+    if (localStorage.getItem('gameStats')) {
+      this.gameService.players = JSON.parse(localStorage.getItem('gameStats'));
+      this.savedStats = this.gameService.players;
+    } else {
+      this.savedStats = this.gameService.players;
     }
   }
 
   newGame() {
     this.gameService.newGame();
     this.modalService.open('new-game-modal');
+  }
+
+  resetStats() {
+    localStorage.removeItem('gameStats');
+    for (const item of this.savedStats) {
+      item.winNumber = 0;
+    }
   }
 
 }

@@ -16,7 +16,6 @@ export class GameService {
   constructor(
     private modalService: ModalService
     ) {
-    this.newGame();
   }
 
   initTiles(): void {
@@ -30,9 +29,8 @@ export class GameService {
 
   initPlayers(): void {
     this.players = [];
-    this.players.push(new Player('X', 'Player 1'));
-    this.players.push(new Player('O', 'Player 2'));
-    this.gameTurn = this.players[0];
+    this.players.push(new Player('X', 'Player 1', 0));
+    this.players.push(new Player('O', 'Player 2', 0));
   }
 
   handleMove(item: Tile): void {
@@ -42,10 +40,12 @@ export class GameService {
       item.empty = false;
       this.endGame = this.checkIfWin(this.tiles);
       this.winner = this.gameTurn;
-      this.changeTurn();
       this.saveToLocalStorage();
+      this.changeTurn();
     }
     if (this.endGame) {
+      this.winner.winNumber++;
+      localStorage.setItem('gameStats', JSON.stringify(this.players));
       this.handleAfterEndGame('win-modal', 'gameState');
     } else if (this.occupiedBlock > 8) {
       this.handleAfterEndGame('draw-modal', 'gameState');
@@ -71,7 +71,7 @@ export class GameService {
   }
 
   newGame(): void {
-    this.initPlayers();
+    this.gameTurn = this.players[0];
     this.initTiles();
   }
 

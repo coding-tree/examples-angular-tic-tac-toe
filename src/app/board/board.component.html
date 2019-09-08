@@ -5,6 +5,14 @@
   <div class="buttons_container">
     <button class="button" (click)="newGame()">New Game</button>
   </div>
+  <div class="stats" *ngFor="let player of savedStats">
+    <p>
+      Name: {{player.name}} <span>Wins: {{player.winNumber}}</span>
+    </p>
+  </div>
+  <div class="buttons_container">
+    <button (click)='resetStats()'>Reset Statistics</button>
+  </div>
 </div>
 
 
