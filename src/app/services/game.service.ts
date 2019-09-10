@@ -38,10 +38,10 @@ export class GameService {
       item.value = this.gameTurn.sign;
       this.occupiedBlock++;
       item.empty = false;
-      this.endGame = this.checkIfWin(this.tiles);
+      this.endGame = this.checkIfWin(this.tiles, 3);
       this.winner = this.gameTurn;
-      this.saveToLocalStorage();
       this.changeTurn();
+      this.saveToLocalStorage();
     }
     if (this.endGame) {
       this.winner.winNumber++;
@@ -56,17 +56,42 @@ export class GameService {
     this.gameTurn.sign === 'X' ? this.gameTurn = this.players[1] : this.gameTurn = this.players[0];
   }
 
-  checkIfWin(tiles: Tile[]): boolean {
-    const victoryConditions = [
-      [0, 1, 2], [3, 4, 5], [6, 7, 8], // rows
-       [0, 3, 6], [1, 4, 7], [2, 5, 8], // columns
-       [0, 4, 8], [2, 4, 6], // diagonals
-     ];
-    for (const condition of victoryConditions) {
-      if (!tiles[condition[0]].empty && tiles[condition[0]].value === tiles[condition[1]].value
-        && tiles[condition[1]].value === tiles[condition[2]].value) {
+  checkIfWin(tiles: Tile[], n: number): boolean {
+    if (this.checkCols(tiles, n) || this.checkRows(tiles, n) || this.checkDiagonals(tiles, n)) {
+      return true;
+    }
+  }
+
+  checkCols(tiles: Tile[], n: number): boolean {
+    for (let i = 0; i < n; i++) {
+      for (let j = i + n; j < tiles.length - n; j += n) {
+        if (!tiles[j].empty && tiles[j - n].value === tiles[j].value && tiles[j].value === tiles[j + n].value) {
+          console.log('kolumny rowne!');
           return true;
+        }
       }
+    }
+  }
+
+  checkRows(tiles: Tile[], n: number): boolean {
+    for (let i = 0; i < tiles.length; i += n) {
+      for (let j = i + 1; j < i + n - 1; j++) {
+        if (!tiles[j].empty && tiles[j - 1].value === tiles[j].value && tiles[j].value === tiles[j + 1].value) {
+          console.log('wiersze rowne!');
+          return true;
+        }
+      }
+    }
+  }
+
+  checkDiagonals(tiles: Tile[], n: number): boolean {
+    if (!tiles[0].empty && tiles[0].value === tiles[n + 1].value && tiles[n + 1].value === tiles[tiles.length - 1].value) {
+      console.log('przekątna rowna!');
+      return true;
+    }
+    if (!tiles[n - 1].empty && tiles[n - 1].value === tiles[n + 1].value && tiles[n + 1].value === tiles[2 * n].value) {
+      console.log('antyprzekątna rowna!');
+      return true;
     }
   }
 
