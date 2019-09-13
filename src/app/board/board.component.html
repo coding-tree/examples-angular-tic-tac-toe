@@ -1,0 +1,33 @@
+<div class="gameBoard">
+  <div class="board">
+    <div class="tile" *ngFor="let item of gameService.tiles" (click)="gameService.handleMove(item)">{{item.value}}</div>
+  </div>
+  <div class="buttons_container">
+    <button class="button" (click)="newGame()">New Game</button>
+  </div>
+  <div class="stats" *ngFor="let player of savedStats">
+    <p>
+      Name: {{player.name}} <span>Wins: {{player.winNumber}}</span>
+    </p>
+  </div>
+  <div class="buttons_container">
+    <button (click)='resetStats()'>Reset Statistics</button>
+  </div>
+</div>
+
+
+<app-modal id="win-modal" class="app-modal">
+  <h1 class="app-modal__title">You win</h1>
+  <p class="app-modal__info">{{gameService?.winner?.name}}</p>
+  <button (click)="modalService.close('win-modal')" class="app-modal__button">Ok</button>
+</app-modal>
+
+<app-modal id="draw-modal" class="app-modal">
+  <h1 class="app-modal__title">Draw!</h1>
+  <button (click)="modalService.close('draw-modal')" class="app-modal__button">Ok</button>
+</app-modal>
+
+<app-modal id="new-game-modal" class="app-modal">
+  <h1 class="app-modal__title">New Game!</h1>
+  <button (click)="modalService.close('new-game-modal')" class="app-modal__button">Ok</button>
+</app-modal>
